@@ -1,0 +1,6 @@
+{
+  "componentScan": {
+    "dir": "",
+    "include": "test/context/resources/**/*.js"
+  }
+}

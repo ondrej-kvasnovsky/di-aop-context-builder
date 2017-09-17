@@ -1,0 +1,26 @@
+{
+  "name": "confi-di",
+  "version": "0.0.1",
+  "description": "Configurable dependency injection",
+  "main": "src/confi-di.js",
+  "scripts": {
+    "test": "nyc --reporter=html --reporter=text mocha --recursive"
+  },
+  "keywords": [
+    "dependency",
+    "injection"
+  ],
+  "author": "Ondrej Kvasnovsky",
+  "license": "MIT",
+  "dependencies": {
+    "camelcase": "^4.1.0",
+    "espree": "^3.5.0",
+    "jsonfile": "^3.0.1",
+    "mz": "^2.6.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^3.5.3",
+    "nyc": "^11.2.1"
+  }
+}
