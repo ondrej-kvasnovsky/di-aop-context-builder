@@ -5,8 +5,14 @@ const ContextLoader = require('../../src/context/context_loader.js');
 describe('Context', function() {
   describe('#getComponent()', function() {
     it('returns component by id with injected definitions', function() {
-      const includePattern = '../../test/context/resources/**/*.js';
-      const contextLoader = new ContextLoader(__dirname, includePattern);
+      const componentScan = [
+          {
+            "dir": "",
+            "include": 'test/context/resources/**/*.js'
+          }
+        ];
+
+      const contextLoader = new ContextLoader(componentScan);
       const context = contextLoader.createContext();
 
       const controller = context.getComponent('sampleController');
@@ -15,41 +21,45 @@ describe('Context', function() {
     });
 
     it('wraps find method on a service and uses a handler', async function() {
-      const includePattern = '../../test/context/resources/**/*.js';
+      const componentScan = [
+        {
+          "dir": "",
+          "include": 'test/context/resources/**/*.js'
+        }
+      ];
+
       const handlers = [
         {
-          'classPatterns': ['.*Service'],
-          'methodPatterns': ['find.*'],
+          "components": ['.*Controller'],
+          'methods': ['.*'],
           'handler': {
             apply: function(target, thisArg, args) {
-              console.log('proxy called');
-              return target.apply(thisArg, args);
+              return "TO TEST CONTROLLER HANDLER WAS CALLED"
             }
           }
         },
         {
-          'classPatterns': ['.*Controller'],
-          'methodPatterns': ['.*'],
+          "components": ['.*Service'],
+          'methods': ['find.*'],
           'handler': {
             apply: function(target, thisArg, args) {
-              console.log('controller proxy called')
-              return target.apply(thisArg, args)
+              return "TO TEST SERVICE HANDLER WAS CALLED"
             }
           }
         }
       ];
-      const contextLoader = new ContextLoader(__dirname, includePattern, handlers);
+      const contextLoader = new ContextLoader(componentScan, handlers);
       const context = contextLoader.createContext();
 
       const controller = context.getComponent('sampleController');
       const service = context.getComponent('sampleService');
       expect(controller.sampleService).to.be.eql(service)
 
-      let ctx = {};
+      const ctx = {};
       const controllerResult = await controller.show(ctx, 1);
       const serviceResult = await service.findById(1);
-      console.log(ctx);
-      console.log(serviceResult);
+      expect(controllerResult).to.be.eql("TO TEST CONTROLLER HANDLER WAS CALLED")
+      expect(serviceResult).to.be.eql("TO TEST SERVICE HANDLER WAS CALLED")
     });
   });
 });

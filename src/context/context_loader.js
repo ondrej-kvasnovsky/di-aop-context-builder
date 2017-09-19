@@ -6,9 +6,8 @@ const JsReflection = require('../reflection/js_reflection');
 const Context = require('./context');
 
 class ContextLoader {
-  constructor(dir, includePattern, methodHandlers) {
-    this.dir = dir;
-    this.includePattern = includePattern;
+  constructor(componentScan = [], methodHandlers = []) {
+    this.componentScan = componentScan;
     this.methodHandlers = methodHandlers;
     this.definitions = new Map();
   }
@@ -19,11 +18,13 @@ class ContextLoader {
    * @returns {Context}
    */
   createContext() {
-    Glob.sync(Path.join(Path.resolve(this.dir), this.includePattern))
-      .forEach((filePath) => {
-        const definition = this.createDefinition(filePath);
-        this.definitions.set(definition.componentId, definition);
-      });
+    this.componentScan.forEach(scan => {
+      Glob.sync(Path.join(Path.resolve(scan.dir), scan.include))
+        .forEach((filePath) => {
+          const definition = this.createDefinition(filePath);
+          this.definitions.set(definition.componentId, definition);
+        });
+    });
 
     return new Context(this.definitions)
   }
@@ -49,18 +50,18 @@ class ContextLoader {
   }
 
   findMethodsHandler(extracted) {
-    let selectedHandlers = new Map();
+    const selectedHandlers = new Map();
 
     const component = extracted.component;
     const componentName = extracted.component.name;
 
     this.methodHandlers.forEach(handler => {
-      handler.classPatterns.forEach((classPattern) => {
+      handler.components.forEach((classPattern) => {
         const classRegex = new RegExp(classPattern);
         if (componentName.match(classRegex)) {
           const methodNames = this.getAllMethods(new component());
           console.log(methodNames);
-          handler.methodPatterns.forEach((methodPattern) => {
+          handler.methods.forEach((methodPattern) => {
             methodNames.forEach((methodName) => {
               const methodRegex = new RegExp(methodPattern);
               if (methodName.match(methodRegex)) {

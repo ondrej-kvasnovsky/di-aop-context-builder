@@ -1,5 +1,0 @@
-{
-  "componentScan": {
-    "include": "src/**/*.js"
-  }
-}
