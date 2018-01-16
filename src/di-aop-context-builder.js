@@ -1,6 +1,6 @@
 const ContextLoader = require('./context/context_loader');
 
-class ConfiDI {
+class ContextBuilder {
 
   constructor(componentScan, handlers = []) {
     const contextLoader = new ContextLoader(componentScan, handlers);
@@ -12,6 +12,6 @@ class ConfiDI {
   }
 }
 
-module.exports = ConfiDI;
+module.exports = ContextBuilder;
 
 

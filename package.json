@@ -1,14 +1,20 @@
 {
-  "name": "confi-di",
+  "name": "di-aop-context-builder",
   "version": "0.0.1",
-  "description": "Configurable dependency injection",
-  "main": "src/confi-di.js",
+  "description": "Dependency Injection and AOP Context Builder",
+  "main": "src/di-aop-context-builder.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ondrej-kvasnovsky/di-aop-context-builder"
+  },
   "scripts": {
     "test": "nyc --reporter=html --reporter=text mocha --recursive"
   },
   "keywords": [
     "dependency",
-    "injection"
+    "injection",
+    "aop",
+    "di"
   ],
   "author": "Ondrej Kvasnovsky",
   "license": "MIT",

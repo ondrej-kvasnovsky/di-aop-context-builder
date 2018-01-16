@@ -1,6 +1,6 @@
 const chai = require('chai');
 const expect = chai.expect;
-const ConfiDI = require('../src/confi-di');
+const ContextBuilder = require('../src/di-aop-context-builder');
 
 describe('Condi', function () {
   describe('#constructor()', function () {
@@ -12,7 +12,7 @@ describe('Condi', function () {
         }
       ];
 
-      const condi = new ConfiDI(componentScan);
+      const condi = new ContextBuilder(componentScan);
       expect(condi.getContext().definitions.size).to.be.eql(2);
     });
 
@@ -44,7 +44,7 @@ describe('Condi', function () {
         }
       ]
 
-      const condi = new ConfiDI(componentScan, handlers);
+      const condi = new ContextBuilder(componentScan, handlers);
       expect(condi.getContext().definitions.size).to.be.eql(2);
     });
   });
